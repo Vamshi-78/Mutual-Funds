@@ -28,7 +28,6 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-// ================= AUTH CONTEXT ===================
 const AuthContext = React.createContext();
 
 function AuthProvider({ children }) {
@@ -55,14 +54,12 @@ function useAuth() {
   return React.useContext(AuthContext);
 }
 
-// ================ PRIVATE ROUTE ====================
 function PrivateRoute({ children }) {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" />;
   return children;
 }
 
-// ================= THEME ========================
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -75,7 +72,6 @@ const theme = createTheme({
   }
 });
 
-// ============= REUSABLE COMPONENTS ===============
 function StatCard({ title, value, icon, color }) {
   return (
     <Paper elevation={2} sx={{ p: 2, display: 'flex', alignItems: 'center' }}>
@@ -105,7 +101,6 @@ function ChartCard({ title, data }) {
   );
 }
 
-// =============== LAYOUT ==========================
 function DashboardLayout({ title, children }) {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => setOpen(!open);
@@ -160,7 +155,6 @@ function DashboardLayout({ title, children }) {
   );
 }
 
-// =============== MOCK DATA =======================
 const chartData = [
   { month: 'Jan', value: 100 },
   { month: 'Feb', value: 110 },
@@ -169,7 +163,7 @@ const chartData = [
   { month: 'May', value: 145 },
 ];
 
-// =============== PAGES ===========================
+
 function Landing() {
   return (
     <DashboardLayout title="Mutual Fund Dashboard">
@@ -330,7 +324,7 @@ function Login() {
   );
 }
 
-// =================== APP ROOT =====================
+
 export default function App() {
   return (
     <AuthProvider>
