@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { TextField, Button, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react"; // Added for re-processing
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Typography, Checkbox, FormControlLabel } from "@mui/material";
 
 export default function Auth() {
+  const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   const [form, setForm] = useState({
     fullName: "",
@@ -10,6 +12,15 @@ export default function Auth() {
     password: "",
     confirmPassword: "",
   });
+  const [rememberMe, setRememberMe] = useState(false);
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedUser");
+    if (rememberedEmail) {
+      setForm((prevForm) => ({ ...prevForm, email: rememberedEmail }));
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -82,10 +93,7 @@ export default function Auth() {
       const users = JSON.parse(localStorage.getItem("users") || "[]");
       const user = users.find(u => u.email === form.email && u.password === form.password);
       
-      if (user) {
-        // Clear any existing data first
-        localStorage.clear();
-        
+              if (user) {        
         // Set the new authentication data
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("currentUser", JSON.stringify({
@@ -95,7 +103,12 @@ export default function Auth() {
         }));
         
         // Navigate to home
-        window.location.href = "/home";
+        if (rememberMe) {
+          localStorage.setItem("rememberedUser", form.email);
+        } else {
+          localStorage.removeItem("rememberedUser");
+        }
+        navigate("/home");
       } else {
         alert("Invalid credentials. Please try again.");
       }
@@ -203,6 +216,22 @@ export default function Auth() {
             />
           )}
 
+          {!isSignup && (
+            <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    name="rememberMe"
+                    color="primary"
+                  />
+                }
+                label="Remember me"
+              />
+            </div>
+          )}
+
           <Button 
             fullWidth 
             variant="contained"
@@ -213,6 +242,7 @@ export default function Auth() {
               '&:hover': {
                 backgroundColor: '#2980b9',
               },
+              marginTop: '20px'
             }}
           >
             {isSignup ? "Create Account" : "Sign In"}
