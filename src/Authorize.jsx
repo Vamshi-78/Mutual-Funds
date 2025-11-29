@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"; // Added for re-processing
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Checkbox, FormControlLabel } from "@mui/material";
 
-export default function Auth() {
+export default function Auth({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   const [form, setForm] = useState({
@@ -101,6 +101,8 @@ export default function Auth() {
           fullName: user.fullName,
           email: user.email
         }));
+                // Update parent auth state
+                if (typeof setIsLoggedIn === 'function') setIsLoggedIn(true);
         
         // Navigate to home
         if (rememberMe) {

@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, Button, Typography, Box } from "@mui/material";
 import { Home, Info, ContactSupport, Logout } from "@mui/icons-material";
 
-export default function AppMenu() {
+export default function AppMenu({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,15 +21,16 @@ export default function AppMenu() {
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("currentUser");
     setCurrentUser(null);
-    
-    // Force a page refresh to clear any cached state
-    window.location.href = "/";
+    // Update parent component's state
+    if (typeof setIsLoggedIn === 'function') setIsLoggedIn(false);
+    // use navigate to redirect to login page
+    navigate("/");
   };
 
   const menuItems = [
-    { label: "Home", path: "/home", icon: <Home /> },
-    { label: "About", path: "/about", icon: <Info /> },
-    { label: "Contact", path: "/contact", icon: <ContactSupport /> },
+    { label: "Home", path: "home", icon: <Home /> },
+    { label: "About", path: "about", icon: <Info /> },
+    { label: "Contact", path: "contact", icon: <ContactSupport /> },
   ];
 
   return (
@@ -49,10 +50,10 @@ export default function AppMenu() {
               key={item.path}
               color="inherit"
               component={Link}
-              to={item.path}
+              to={`/${item.path}`}
               sx={{
                 mx: 1,
-                backgroundColor: location.pathname === item.path ? "rgba(255,255,255,0.1)" : "transparent",
+                backgroundColor: location.pathname.includes(item.path) ? "rgba(255,255,255,0.1)" : "transparent",
                 "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" },
               }}
               startIcon={item.icon}

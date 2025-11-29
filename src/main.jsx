@@ -6,7 +6,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter basename="/Mutual-Funds/">
+    <BrowserRouter basename="/Mutual-Funds">
       <App />
     </BrowserRouter>
   </React.StrictMode>

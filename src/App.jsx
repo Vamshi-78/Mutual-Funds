@@ -31,43 +31,43 @@ export default function App() {
   return (
     <div className="app-container">
       {/* Show menu only when logged in */}
-      {isLoggedIn && <AppMenu />}
+      {isLoggedIn && <AppMenu setIsLoggedIn={setIsLoggedIn} />}
 
       <div className="page-content">
         <Routes>
           {/* Default route - if logged in, redirect to home, otherwise show Auth */}
           <Route
-            path=""
+            index
             element={isLoggedIn ? <Navigate to="/home" /> : <Auth setIsLoggedIn={setIsLoggedIn} />}
           />
 
           {/* Protected routes */}
           <Route
-            path="/home"
+            path="home"
             element={isLoggedIn ? <Home /> : <Navigate to="/" />}
           />
           <Route
-            path="/about"
+            path="about"
             element={isLoggedIn ? <About /> : <Navigate to="/" />}
           />
           <Route
-            path="/contact"
+            path="contact"
             element={isLoggedIn ? <Contact /> : <Navigate to="/" />}
           />
           <Route
-            path="/admin-dashboard"
+            path="admin-dashboard"
             element={isLoggedIn ? <AdminDashboard /> : <Navigate to="/" />}
           />
           <Route
-            path="/investor-dashboard"
+            path="investor-dashboard"
             element={isLoggedIn ? <InvestorDashboard /> : <Navigate to="/" />}
           />
           <Route
-            path="/financial-advisor-dashboard"
+            path="financial-advisor-dashboard"
             element={isLoggedIn ? <FinancialAdvisorDashboard /> : <Navigate to="/" />}
           />
           <Route
-            path="/data-analyst-dashboard"
+            path="data-analyst-dashboard"
             element={isLoggedIn ? <DataAnalystDashboard /> : <Navigate to="/" />}
           />
         </Routes>
